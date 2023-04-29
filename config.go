@@ -42,7 +42,7 @@ func NewConfig() *Config {
 		PORT:               envPort,
 		ALLOWED_FILE_TYPES: ALLOWED_FILE_TYPES, // TODO
 		PostgresConfig: &pg_conf.PostgresConfig{
-			PGPort:     "",
+			PGPort:     "", // TODO https://github.com/joegasewicz/pg-conf/issues/1
 			PGDatabase: "",
 			PGUser:     "",
 			PGPassword: "",
