@@ -8,6 +8,7 @@ import (
 
 func main() {
 	// config
+	config := NewConfig()
 	c := gomek.Config{
 		BaseTemplateName: "layout",
 		BaseTemplates: []string{
@@ -22,7 +23,8 @@ func main() {
 	// middleware
 	app.Use(gomek.Logging)
 	app.Use(gomek.CORS)
-	app.Listen(4444)
+	app.SetHost(config.HOST)
+	app.Listen(config.PORT)
 	if err := app.Start(); err != nil {
 		log.Printf("Error running Gomek: %e", err)
 	}

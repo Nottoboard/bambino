@@ -1,5 +1,10 @@
 package main
 
+import (
+	"os"
+	"strconv"
+)
+
 const (
 	DEFAULT_PROTOCOL = "http"
 	DEFAULT_HOST     = "localhost"
@@ -9,13 +14,25 @@ const (
 type Config struct {
 	PROTOCOL string
 	HOST     string
-	PORT     uint8
+	PORT     int
 }
 
-func (c *Config) New(protocol, host string, port uint8) *Config {
+func NewConfig() *Config {
+	envProtocol := os.Getenv("DEFAULT_PROTOCOL")
+	if envProtocol == "" {
+		envProtocol = DEFAULT_PROTOCOL
+	}
+	envHost := os.Getenv("DEFAULT_HOST")
+	if envHost == "" {
+		envHost = DEFAULT_HOST
+	}
+	envPort, _ := strconv.Atoi(os.Getenv("DEFAULT_PORT"))
+	if envPort == 0 {
+		envPort = DEFAULT_PORT
+	}
 	return &Config{
-		PROTOCOL: protocol,
-		HOST:     host,
-		PORT:     port,
+		PROTOCOL: envProtocol,
+		HOST:     envHost,
+		PORT:     envPort,
 	}
 }
