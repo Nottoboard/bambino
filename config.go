@@ -1,20 +1,25 @@
 package main
 
 import (
+	"fmt"
+	pg_conf "github.com/joegasewicz/pg-conf"
 	"os"
 	"strconv"
 )
 
 const (
-	DEFAULT_PROTOCOL = "http"
-	DEFAULT_HOST     = "localhost"
-	DEFAULT_PORT     = 4444
+	DEFAULT_PROTOCOL   = "http"
+	DEFAULT_HOST       = "localhost"
+	DEFAULT_PORT       = 4444
+	ALLOWED_FILE_TYPES = "jpg,jpeg,png"
 )
 
 type Config struct {
-	PROTOCOL string
-	HOST     string
-	PORT     int
+	*pg_conf.PostgresConfig
+	PROTOCOL           string
+	HOST               string
+	PORT               int
+	ALLOWED_FILE_TYPES string
 }
 
 func NewConfig() *Config {
@@ -31,8 +36,13 @@ func NewConfig() *Config {
 		envPort = DEFAULT_PORT
 	}
 	return &Config{
-		PROTOCOL: envProtocol,
-		HOST:     envHost,
-		PORT:     envPort,
+		PROTOCOL:           envProtocol,
+		HOST:               envHost,
+		PORT:               envPort,
+		ALLOWED_FILE_TYPES: ALLOWED_FILE_TYPES, // TODO
 	}
+}
+
+func (c *Config) GetUrl() string {
+	return fmt.Sprintf("%s://%s:%d", c.PROTOCOL, c.HOST, c.PORT)
 }

@@ -6,6 +6,8 @@ import (
 	"log"
 )
 
+var FileUpload = NewFileUpload()
+
 func main() {
 	// config
 	config := NewConfig()
@@ -19,7 +21,7 @@ func main() {
 	app := gomek.New(c)
 	// views
 	app.Route("/health").Methods("GET").Resource(&views.Health{})
-	app.Route("/files").Methods("GET").Resource(&views.File{})
+	app.Route("/files").Methods("GET", "POST").Resource(&views.File{})
 	// middleware
 	app.Use(gomek.Logging)
 	app.Use(gomek.CORS)
