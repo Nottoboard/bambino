@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	entityfileuploader "github.com/joegasewicz/entity-file-uploader"
 	"github.com/joegasewicz/gomek"
+	"log"
 	"net/http"
 )
 
@@ -29,11 +30,44 @@ func (f *FileView) Post(w http.ResponseWriter, r *http.Request, d *gomek.Data) {
 		return // TODO return json
 	}
 	err = json.Unmarshal([]byte(optionsStr[0]), &options)
-	for _, fileName := range options.Files {
-		_, err := entityfileuploader.GetFileName(r, fileName)
+	if err != nil {
+		log.Println(err.Error())
+		gomek.JSON(w, nil, http.StatusBadRequest)
+		return
+	}
+	for _, optionsfileName := range options.Files {
+		fileName, err := entityfileuploader.GetFileName(r, optionsfileName)
 		if err != nil {
-			w.WriteHeader(http.StatusBadRequest)
-			return // return json
+			log.Println(err.Error())
+			gomek.JSON(w, nil, http.StatusBadRequest)
+			return
+		}
+		data, err := json.Marshal(options.Data)
+		if err != nil {
+			log.Println(err.Error())
+			gomek.JSON(w, nil, http.StatusBadRequest)
+			return
+		}
+		fileModel := FileModel{
+			Name:       optionsfileName,
+			Data:       string(data),
+			EntityName: options.EntityName,
+		}
+		result := DB.Create(&fileModel)
+		if result.Error != nil {
+			log.Printf("error saving file %s\n", result.Error.Error())
+			gomek.JSON(w, nil, http.StatusInternalServerError)
+			return
+		}
+		if result.RowsAffected == 0 {
+			log.Printf("unable to save file with name: %s", fileName)
+		}
+		_, err = FileUploader.Upload(w, r, fileModel.ID, optionsfileName)
+		if err != nil {
+			log.Println(err)
+			log.Printf("unable to store file on server with name: %s", fileName)
+			gomek.JSON(w, nil, http.StatusInternalServerError)
+			return
 		}
 	}
 }
