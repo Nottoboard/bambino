@@ -1,2 +1,2 @@
-# bambino
+# Bambino
 A fileserver written in Go
