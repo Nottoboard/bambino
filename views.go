@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	entityfileuploader "github.com/joegasewicz/entity-file-uploader"
 	"github.com/joegasewicz/gomek"
@@ -28,9 +29,16 @@ func (f *FileView) Post(w http.ResponseWriter, r *http.Request, d *gomek.Data) {
 	var fileResp FileRespSchema
 	fileRespSlices := make([]FileRespSchema, 0)
 	optionsStr, err := gomek.GetParams(r, "options")
-	if err != nil || optionsStr == nil {
-		w.WriteHeader(http.StatusNotAcceptable)
-		return // TODO return json
+	if err != nil {
+		log.Println(err.Error())
+		gomek.JSON(w, nil, http.StatusBadRequest)
+		return
+	}
+	if optionsStr == nil {
+		err := errors.New("no options send with request")
+		log.Println(err.Error())
+		gomek.JSON(w, nil, http.StatusBadRequest)
+		return
 	}
 	err = json.Unmarshal([]byte(optionsStr[0]), &options)
 	if err != nil {
