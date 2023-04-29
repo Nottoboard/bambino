@@ -1,5 +1,5 @@
 # Bambino
-A fileserver
+A fileserver built with [gomek](https://github.com/joegasewicz/gomek)
 
 #### Files
 `http://localhost:4444/files`
