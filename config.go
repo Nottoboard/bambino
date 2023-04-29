@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	pg_conf "github.com/joegasewicz/pg-conf"
+	"log"
 	"os"
 	"strconv"
 )
@@ -15,11 +16,11 @@ const (
 )
 
 type Config struct {
-	*pg_conf.PostgresConfig
 	PROTOCOL           string
 	HOST               string
 	PORT               int
 	ALLOWED_FILE_TYPES string
+	*pg_conf.PostgresConfig
 }
 
 func NewConfig() *Config {
@@ -35,12 +36,23 @@ func NewConfig() *Config {
 	if envPort == 0 {
 		envPort = DEFAULT_PORT
 	}
-	return &Config{
+	c := &Config{
 		PROTOCOL:           envProtocol,
 		HOST:               envHost,
 		PORT:               envPort,
 		ALLOWED_FILE_TYPES: ALLOWED_FILE_TYPES, // TODO
+		PostgresConfig: &pg_conf.PostgresConfig{
+			PGPort:     "",
+			PGDatabase: "",
+			PGUser:     "",
+			PGPassword: "",
+		},
 	}
+	err := pg_conf.Update(c.PostgresConfig)
+	if err != nil {
+		log.Panic(err)
+	}
+	return c
 }
 
 func (c *Config) GetUrl() string {

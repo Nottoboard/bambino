@@ -1,13 +1,13 @@
 version: "3"
 
 services:
-  postgres_fileserver:
+  postgres_bambino:
     image: "postgres:latest"
     ports:
-      - "5442:5432"
+      - "5430:5432"
     env_file:
-      - ".envs-local/.fileserver_db"
+      - ".env-dev"
     volumes:
-      - ~/local_postgres/fileserver_volume/:/var/lib/postgresql/data/
+      - ~/postgres_bambino_volume/:/var/lib/postgresql/data/
 volumes:
-  fileserver_db:
+  bambino_db:

@@ -1,14 +1,17 @@
 package main
 
 import (
-	"github.com/joegasewicz/bambino/views"
 	"github.com/joegasewicz/gomek"
 	"log"
 )
 
-var FileUpload = NewFileUpload()
+var (
+	AppConfig = NewConfig()
+	DB        = CreateDB()
+)
 
 func main() {
+
 	// config
 	config := NewConfig()
 	c := gomek.Config{
@@ -20,8 +23,8 @@ func main() {
 	// app
 	app := gomek.New(c)
 	// views
-	app.Route("/health").Methods("GET").Resource(&views.Health{})
-	app.Route("/files").Methods("GET", "POST").Resource(&views.File{})
+	app.Route("/health").Methods("GET").Resource(&HealthView{})
+	app.Route("/files").Methods("GET", "POST").Resource(&FileView{})
 	// middleware
 	app.Use(gomek.Logging)
 	app.Use(gomek.CORS)

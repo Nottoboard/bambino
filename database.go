@@ -1,12 +1,16 @@
 package main
 
 import (
-	pg_conf "github.com/joegasewicz/pg-conf"
+	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"log"
 )
 
 func CreateDB() *gorm.DB {
-	//
-
-	pg_conf.Update()
+	dsn := AppConfig.PostgresConfig.GetPostgresConnStr()
+	database, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	if err != nil {
+		log.Fatalln("Database")
+	}
+	return database
 }

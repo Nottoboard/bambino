@@ -1,8 +1,8 @@
 create-volumes:
-	docker volume create --name=fileserver_db
+	docker volume create --name=postgres_bambino_volume
 
 remove-volumes:
-	docker rm fileserver_db
+	docker rm postgres_bambino_volume
 
 docker-compose:
 	docker-compose -f docker-compose.yaml up

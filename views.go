@@ -7,12 +7,12 @@ import (
 	"net/http"
 )
 
-type File struct{}
-type User struct{}
-type Health struct{}
+type FileView struct{}
+type UserView struct{}
+type HealthView struct{}
 
 // file
-func (f *File) Get(w http.ResponseWriter, r *http.Request, d *gomek.Data) {
+func (f *FileView) Get(w http.ResponseWriter, r *http.Request, d *gomek.Data) {
 	var data = struct {
 		Name string
 	}{
@@ -21,7 +21,7 @@ func (f *File) Get(w http.ResponseWriter, r *http.Request, d *gomek.Data) {
 	gomek.JSON(w, data, http.StatusOK)
 }
 
-func (f *File) Post(w http.ResponseWriter, r *http.Request, d *gomek.Data) {
+func (f *FileView) Post(w http.ResponseWriter, r *http.Request, d *gomek.Data) {
 	var options OptionSchema
 	optionsStr, err := gomek.GetParams(r, "options")
 	if err != nil || optionsStr == nil {
@@ -38,41 +38,41 @@ func (f *File) Post(w http.ResponseWriter, r *http.Request, d *gomek.Data) {
 	}
 }
 
-func (f *File) Put(w http.ResponseWriter, r *http.Request, d *gomek.Data) {
+func (f *FileView) Put(w http.ResponseWriter, r *http.Request, d *gomek.Data) {
 	panic("implement me")
 }
-func (f *File) Delete(w http.ResponseWriter, r *http.Request, d *gomek.Data) {
+func (f *FileView) Delete(w http.ResponseWriter, r *http.Request, d *gomek.Data) {
 	panic("implement me")
 }
 
 // health
-func (h *Health) Get(w http.ResponseWriter, r *http.Request, d *gomek.Data) {
+func (h *HealthView) Get(w http.ResponseWriter, r *http.Request, d *gomek.Data) {
 	templateData := make(gomek.Data)
 	templateData["health"] = map[string]string{
 		"status": "OK",
 	}
 	gomek.JSON(w, templateData, http.StatusOK)
 }
-func (h *Health) Post(w http.ResponseWriter, r *http.Request, d *gomek.Data) {
+func (h *HealthView) Post(w http.ResponseWriter, r *http.Request, d *gomek.Data) {
 	panic("implement me")
 }
-func (h *Health) Put(w http.ResponseWriter, r *http.Request, d *gomek.Data) {
+func (h *HealthView) Put(w http.ResponseWriter, r *http.Request, d *gomek.Data) {
 	panic("implement me")
 }
-func (h *Health) Delete(w http.ResponseWriter, r *http.Request, d *gomek.Data) {
+func (h *HealthView) Delete(w http.ResponseWriter, r *http.Request, d *gomek.Data) {
 	panic("implement me")
 }
 
 // user
-func (u *User) Get(w http.ResponseWriter, r *http.Request, d *gomek.Data) {
+func (u *UserView) Get(w http.ResponseWriter, r *http.Request, d *gomek.Data) {
 	panic("implement me")
 }
-func (u *User) Post(w http.ResponseWriter, r *http.Request, d *gomek.Data) {
+func (u *UserView) Post(w http.ResponseWriter, r *http.Request, d *gomek.Data) {
 	panic("implement me")
 }
-func (u *User) Put(w http.ResponseWriter, r *http.Request, d *gomek.Data) {
+func (u *UserView) Put(w http.ResponseWriter, r *http.Request, d *gomek.Data) {
 	panic("implement me")
 }
-func (u *User) Delete(w http.ResponseWriter, r *http.Request, d *gomek.Data) {
+func (u *UserView) Delete(w http.ResponseWriter, r *http.Request, d *gomek.Data) {
 	panic("implement me")
 }
