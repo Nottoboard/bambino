@@ -1,2 +1,2 @@
 # Bambino
-A fileserver written in Go
+A fileserver
