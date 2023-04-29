@@ -4,7 +4,7 @@ services:
   postgres_fileserver:
     image: "postgres:latest"
     ports:
-      - "5432:5432"
+      - "5442:5432"
     env_file:
       - ".envs-local/.fileserver_db"
     volumes:

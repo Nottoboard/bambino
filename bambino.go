@@ -18,10 +18,11 @@ func main() {
 	app := gomek.New(c)
 	// views
 	app.Route("/health").Methods("GET").Resource(&views.Health{})
+	app.Route("/files").Methods("GET").Resource(&views.File{})
 	// middleware
 	app.Use(gomek.Logging)
 	app.Use(gomek.CORS)
-	app.Listen(3000)
+	app.Listen(4444)
 	if err := app.Start(); err != nil {
 		log.Printf("Error running Gomek: %e", err)
 	}
