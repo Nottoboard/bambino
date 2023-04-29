@@ -10,3 +10,14 @@ type OptionSchema struct {
 type FileSchema struct {
 	Name string `json:"name"`
 }
+
+type FileRespSchema struct {
+	ID         uint                   `json:"id"`
+	FileName   string                 `json:"file_name"`
+	Name       string                 `json:"name"`
+	Data       map[string]interface{} `json:"data"`
+	EntityName string                 `json:"entity_name"`
+	Url        string                 `json:"url"`
+	Path       string                 `json:"path"`
+	CreatedOn  string                 `json:"created_on"`
+}

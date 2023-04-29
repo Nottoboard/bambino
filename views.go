@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	entityfileuploader "github.com/joegasewicz/entity-file-uploader"
 	"github.com/joegasewicz/gomek"
 	"log"
@@ -24,6 +25,8 @@ func (f *FileView) Get(w http.ResponseWriter, r *http.Request, d *gomek.Data) {
 
 func (f *FileView) Post(w http.ResponseWriter, r *http.Request, d *gomek.Data) {
 	var options OptionSchema
+	var fileResp FileRespSchema
+	fileRespSlices := make([]FileRespSchema, 0)
 	optionsStr, err := gomek.GetParams(r, "options")
 	if err != nil || optionsStr == nil {
 		w.WriteHeader(http.StatusNotAcceptable)
@@ -69,7 +72,21 @@ func (f *FileView) Post(w http.ResponseWriter, r *http.Request, d *gomek.Data) {
 			gomek.JSON(w, nil, http.StatusInternalServerError)
 			return
 		}
+		path := fmt.Sprintf("/files/%d/%s", fileModel.ID, fileModel.Name)
+		url := fmt.Sprintf("%s/files/%s", AppConfig.GetUrl(), path)
+		fileResp = FileRespSchema{
+			ID:         fileModel.ID,
+			FileName:   fileName,
+			Name:       optionsfileName,
+			Data:       options.Data,
+			EntityName: fileModel.EntityName,
+			Url:        url,
+			Path:       path,
+			CreatedOn:  fileModel.CreatedAt.String(),
+		}
+		fileRespSlices = append(fileRespSlices, fileResp)
 	}
+	gomek.JSON(w, fileRespSlices, http.StatusOK)
 }
 
 func (f *FileView) Put(w http.ResponseWriter, r *http.Request, d *gomek.Data) {
