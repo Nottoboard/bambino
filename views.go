@@ -46,7 +46,10 @@ func (f *FileView) Post(w http.ResponseWriter, r *http.Request, d *gomek.Data) {
 		gomek.JSON(w, nil, http.StatusBadRequest)
 		return
 	}
+	// TODO https://github.com/joegasewicz/bambino/issues/8
 	for _, optionsfileName := range options.Files {
+		entityPath := fmt.Sprintf("files/%s", options.EntityName)
+		var FileUploader = NewFilesManager(entityPath, "") // TODO
 		fileName, err := entityfileuploader.GetFileName(r, optionsfileName)
 		if err != nil {
 			log.Println(err.Error())
@@ -80,8 +83,8 @@ func (f *FileView) Post(w http.ResponseWriter, r *http.Request, d *gomek.Data) {
 			gomek.JSON(w, nil, http.StatusInternalServerError)
 			return
 		}
-		path := fmt.Sprintf("/files/%d/%s", fileModel.ID, fileModel.Name)
-		url := fmt.Sprintf("%s/files/%s", AppConfig.GetUrl(), path)
+		path := fmt.Sprintf("files/%d/%s", fileModel.ID, fileModel.Name)
+		url := fmt.Sprintf("%s/%s", AppConfig.GetUrl(), path)
 		fileResp = FileRespSchema{
 			ID:         fileModel.ID,
 			FileName:   fileName,
@@ -89,7 +92,7 @@ func (f *FileView) Post(w http.ResponseWriter, r *http.Request, d *gomek.Data) {
 			Data:       options.Data,
 			EntityName: fileModel.EntityName,
 			Url:        url,
-			Path:       path,
+			Path:       fmt.Sprintf("/%s", path),
 			CreatedOn:  fileModel.CreatedAt.String(),
 		}
 		fileRespSlices = append(fileRespSlices, fileResp)
