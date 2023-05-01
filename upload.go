@@ -19,5 +19,4 @@ func NewFilesManager(table, allowedTypes string) *entityfileuploader.FileManager
 	return fileUploader
 }
 
-var FileUploader = NewFilesManager("files", "") // TODO
 var UserUploader = NewFilesManager("users", "") // TODO

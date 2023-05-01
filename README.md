@@ -28,7 +28,7 @@ This is a response examples if we were to use this request url:
         "name": "cat1",
         "data": {},
         "entity_name": "User",
-        "url": "http://localhost:4444/files//files/7/cat1",
+        "url": "http://localhost:4444/files/7/cat1",
         "path": "/files/7/cat1",
         "created_on": "2023-04-29 19:26:52.301456 +0100 BST"
     }
