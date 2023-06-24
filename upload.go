@@ -10,7 +10,7 @@ func NewFilesManager(table, allowedTypes string) *entityfileuploader.FileManager
 		UploadDir:   "uploads",
 		MaxFileSize: 10,
 		FileTypes:   []string{"png", "jpeg", "jpg"}, // TODO
-		URL:         "http://localhost:",
+		URL:         "http://localhost:4444",
 	}
 	fileUploader, err := fileUpload.Init(table)
 	if err != nil {
@@ -18,5 +18,3 @@ func NewFilesManager(table, allowedTypes string) *entityfileuploader.FileManager
 	}
 	return fileUploader
 }
-
-var UserUploader = NewFilesManager("users", "") // TODO

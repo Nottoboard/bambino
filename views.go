@@ -14,23 +14,29 @@ type FileView struct{}
 type UserView struct{}
 type HealthView struct{}
 
+var agnosticUploader *entityfileuploader.FileManager
+
 // file
 func (f *FileView) Get(w http.ResponseWriter, r *http.Request, d *gomek.Data) {
-	var data = struct {
-		Name string
-	}{
-		Name: "test1",
+	id, err := gomek.GetParams(r, "id")
+	if err != nil {
+		return
+		gomek.JSON(w, nil, http.StatusBadRequest)
 	}
+	var fileModel FileModel
+	DB.First(&fileModel, "id = ?", id[0])
+	agnosticUploader = NewFilesManager(fileModel.EntityName, "")
+	fileURL := agnosticUploader.Get(fileModel.FileName, fileModel.ID)
+	data := struct{ URL string }{URL: fileURL}
 	gomek.JSON(w, data, http.StatusOK)
 }
 
 func (f *FileView) Post(w http.ResponseWriter, r *http.Request, d *gomek.Data) {
 	var options OptionSchema
 	var fileResp FileRespSchema
-	fileRespSlices := make([]FileRespSchema, 0)
-	entityPath := fmt.Sprintf("files/%s", options.EntityName)
-	var FileUploader = NewFilesManager(entityPath, "") // TODO
 	optionsStr, err := gomek.GetParams(r, "options")
+
+	fileRespSlices := make([]FileRespSchema, 0)
 	if err != nil {
 		log.Println(err.Error())
 		gomek.JSON(w, nil, http.StatusBadRequest)
@@ -48,9 +54,10 @@ func (f *FileView) Post(w http.ResponseWriter, r *http.Request, d *gomek.Data) {
 		gomek.JSON(w, nil, http.StatusBadRequest)
 		return
 	}
+	agnosticUploader = NewFilesManager(options.EntityName, "") // TODO get allowedTypes from environment vars
 	// TODO https://github.com/joegasewicz/bambino/issues/8
-	for _, optionsfileName := range options.Files {
-		fileName, err := entityfileuploader.GetFileName(r, optionsfileName)
+	for _, optionsFileName := range options.Files {
+		fileName, err := entityfileuploader.GetFileName(r, optionsFileName)
 		if err != nil {
 			log.Println(err.Error())
 			gomek.JSON(w, nil, http.StatusBadRequest)
@@ -63,7 +70,8 @@ func (f *FileView) Post(w http.ResponseWriter, r *http.Request, d *gomek.Data) {
 			return
 		}
 		fileModel := FileModel{
-			Name:       optionsfileName,
+			Name:       optionsFileName,
+			FileName:   fileName,
 			Data:       string(data),
 			EntityName: options.EntityName,
 		}
@@ -76,19 +84,19 @@ func (f *FileView) Post(w http.ResponseWriter, r *http.Request, d *gomek.Data) {
 		if result.RowsAffected == 0 {
 			log.Printf("unable to save file with name: %s", fileName)
 		}
-		_, err = FileUploader.Upload(w, r, fileModel.ID, optionsfileName)
+		_, err = agnosticUploader.Upload(w, r, fileModel.ID, optionsFileName)
 		if err != nil {
 			log.Println(err)
 			log.Printf("unable to store file on server with name: %s", fileName)
 			gomek.JSON(w, nil, http.StatusInternalServerError)
 			return
 		}
-		path := fmt.Sprintf("files/%d/%s", fileModel.ID, fileModel.Name)
+		path := fmt.Sprintf("%d/%s", fileModel.ID, fileModel.Name)
 		url := fmt.Sprintf("%s/%s", AppConfig.GetUrl(), path)
 		fileResp = FileRespSchema{
 			ID:         fileModel.ID,
 			FileName:   fileName,
-			Name:       optionsfileName,
+			Name:       optionsFileName,
 			Data:       options.Data,
 			EntityName: fileModel.EntityName,
 			Url:        url,
