@@ -17,10 +17,16 @@ github.com/joegasewicz/entity-file-uploader v0.0.7 h1:QNDuWIAKzpqiP4cqJBiQe5AQlI
 github.com/joegasewicz/entity-file-uploader v0.0.7/go.mod h1:IuzLPzIzF0YUJ6smx7ZxctEHhyeRnUy+r0czRyV88d8=
 github.com/joegasewicz/gomek v0.4.5 h1:ucATHGIvOk25NMqfP1rPwq6a3dFVUwg8Ur4bdwomYL8=
 github.com/joegasewicz/gomek v0.4.5/go.mod h1:xIA1E1/iQc/4XB+YgiKDYtfH5wmUXRn78DocLH5urGI=
+github.com/joegasewicz/gomek v0.4.6 h1:iEe1e67vsu2PCbRxO8VJhGCvLquwLZz7gpPsoh4t6DQ=
+github.com/joegasewicz/gomek v0.4.6/go.mod h1:xIA1E1/iQc/4XB+YgiKDYtfH5wmUXRn78DocLH5urGI=
+github.com/joegasewicz/gomek v0.4.7 h1:fAUenmIsMkNm+8yUtU50A8G/9udVyGUJXUBizwqQEX8=
+github.com/joegasewicz/gomek v0.4.7/go.mod h1:xIA1E1/iQc/4XB+YgiKDYtfH5wmUXRn78DocLH5urGI=
 github.com/joegasewicz/pg-conf v0.1.2 h1:MeBgfuu/N1HRQDp+/RPtctPR0phA65PhgG5W2aZ4D1g=
 github.com/joegasewicz/pg-conf v0.1.2/go.mod h1:lbNke2WCF6IMgYVeLRLqan/1m9jrQSuYuJVEgMRbp4g=
 github.com/joegasewicz/status-writer v0.1.0 h1:hcS/EQ78FoeVtmK90sZPrCPO1PyXK9UO1Cxfw29Q/3U=
 github.com/joegasewicz/status-writer v0.1.0/go.mod h1:7NiC8jbjB1SxpVURMYsViRZeyQrPEBu/gSEjnwDDw+U=
+github.com/joegasewicz/status-writer v1.0.0 h1:cTj5iymQNypLtlIlR3gByLGiBhYsvYZ4rMSdsUlbrHE=
+github.com/joegasewicz/status-writer v1.0.0/go.mod h1:7NiC8jbjB1SxpVURMYsViRZeyQrPEBu/gSEjnwDDw+U=
 github.com/kr/pretty v0.1.0/go.mod h1:dAy3ld7l9f0ibDNOQOHHMYYIIbhfbHSm3C4ZsoJORNo=
 github.com/kr/pretty v0.2.1/go.mod h1:ipq/a2n7PKx3OHsz4KJII5eveXtPO4qwEXGdVfWzfnI=
 github.com/kr/pretty v0.3.0/go.mod h1:640gp4NfQd8pI5XOwp5fnNeVWj67G7CFk/SaSQn7NBk=

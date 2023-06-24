@@ -34,6 +34,9 @@ func main() {
 	// views
 	app.Route("/health").Methods("GET").Resource(&HealthView{})
 	app.Route("/files").Methods("GET", "POST").Resource(&FileView{})
+	// Serve static content
+	uploadFiles := http.FileServer(http.Dir("uploads"))
+	app.Handle("/uploads/", http.StripPrefix("/uploads/", uploadFiles))
 	// middleware
 	app.Use(gomek.Logging)
 	app.Use(gomek.CORS)
