@@ -38,7 +38,7 @@ This is a response examples if we were to use this request url:
 Each file is stored on the server based on the `entity_name` value set in the `options` query param.
 For example, with `"User"` `entity_name` the file would be stored at `files/User/1/image.jpg`
 
-### Response GET `http://127.0.0.1:4444/files?id=1`
+### Response GET `/files?id=1`
 Get a file by ID. Response:
 
 ``` 
