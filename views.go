@@ -28,6 +28,8 @@ func (f *FileView) Post(w http.ResponseWriter, r *http.Request, d *gomek.Data) {
 	var options OptionSchema
 	var fileResp FileRespSchema
 	fileRespSlices := make([]FileRespSchema, 0)
+	entityPath := fmt.Sprintf("files/%s", options.EntityName)
+	var FileUploader = NewFilesManager(entityPath, "") // TODO
 	optionsStr, err := gomek.GetParams(r, "options")
 	if err != nil {
 		log.Println(err.Error())
@@ -48,8 +50,6 @@ func (f *FileView) Post(w http.ResponseWriter, r *http.Request, d *gomek.Data) {
 	}
 	// TODO https://github.com/joegasewicz/bambino/issues/8
 	for _, optionsfileName := range options.Files {
-		entityPath := fmt.Sprintf("files/%s", options.EntityName)
-		var FileUploader = NewFilesManager(entityPath, "") // TODO
 		fileName, err := entityfileuploader.GetFileName(r, optionsfileName)
 		if err != nil {
 			log.Println(err.Error())

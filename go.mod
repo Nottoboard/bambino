@@ -9,9 +9,9 @@ require (
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/joegasewicz/entity-file-uploader v0.0.7 // indirect
-	github.com/joegasewicz/gomek v0.4.5 // indirect
+	github.com/joegasewicz/gomek v0.4.7 // indirect
 	github.com/joegasewicz/pg-conf v0.1.2 // indirect
-	github.com/joegasewicz/status-writer v0.1.0 // indirect
+	github.com/joegasewicz/status-writer v1.0.0 // indirect
 	golang.org/x/crypto v0.8.0 // indirect
 	golang.org/x/text v0.9.0 // indirect
 	gorm.io/driver/postgres v1.5.0 // indirect

@@ -35,9 +35,14 @@ This is a response examples if we were to use this request url:
     ... etc.
 ]
 ```
+Each file is stored on the server based on the `entity_name` value set in the `options` query param.
+For example, with `"User"` `entity_name` the file would be stored at `files/User/1/image.jpg`
 
 #### Files
 `http://localhost:4444/files`
 
 #### Health
 `http://localhost:4444/health`
+
+### Configuration // TODO
+`bambinoconf.yaml`
