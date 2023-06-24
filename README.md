@@ -38,6 +38,16 @@ This is a response examples if we were to use this request url:
 Each file is stored on the server based on the `entity_name` value set in the `options` query param.
 For example, with `"User"` `entity_name` the file would be stored at `files/User/1/image.jpg`
 
+### Response GET `http://127.0.0.1:4444/files?id=1`
+Get a file by ID. Response:
+
+``` 
+{
+    "URL": "http://localhost:4444/uploads/cats/1/cat1.png"
+}
+```
+
+
 #### Files
 `http://localhost:4444/files`
 
