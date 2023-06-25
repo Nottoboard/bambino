@@ -8,7 +8,6 @@ import (
 	"github.com/joegasewicz/gomek"
 	"log"
 	"net/http"
-	"strings"
 )
 
 type FileView struct{}
@@ -88,9 +87,7 @@ func (f *FileView) Post(w http.ResponseWriter, r *http.Request, d *gomek.Data) {
 			log.Printf("unable to save file with name: %s", fileName)
 		}
 
-		fullPath, err := fileManager.Upload(w, r, fileModel.ID, optionsFileName)
-		absPath := strings.Split(fullPath, "/")
-		name := absPath[len(absPath)-1]
+		_, err = fileManager.Upload(w, r, fileModel.ID, optionsFileName)
 		if err != nil {
 			// Handle file uploads over http
 			err = fileManager.ReceiveMultiPartFormDataAndSaveToDir(r, "logo", fileModel.ID)
@@ -102,7 +99,7 @@ func (f *FileView) Post(w http.ResponseWriter, r *http.Request, d *gomek.Data) {
 			}
 		}
 
-		path := fmt.Sprintf("%d/%s", fileModel.ID, name)
+		path := fmt.Sprintf("%d/%s", fileModel.ID, optionsFileName)
 		url := fmt.Sprintf("%s/%s/%s/%s", AppConfig.GetUrl(), fileManager.UploadDir, options.EntityName, path)
 		fileResp = FileRespSchema{
 			ID:         fileModel.ID,
