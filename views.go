@@ -6,10 +6,8 @@ import (
 	"fmt"
 	entityfileuploader "github.com/joegasewicz/entity-file-uploader"
 	"github.com/joegasewicz/gomek"
-	"io"
 	"log"
 	"net/http"
-	"os"
 	"strings"
 )
 
@@ -32,25 +30,6 @@ func (f *FileView) Get(w http.ResponseWriter, r *http.Request, d *gomek.Data) {
 	fileURL := agnosticUploader.Get(fileModel.FileName, fileModel.ID)
 	data := struct{ URL string }{URL: fileURL}
 	gomek.JSON(w, data, http.StatusOK)
-}
-
-func receiveMultiPartFormDataAndSaveToDir(r *http.Request, dist, field string) error {
-	r.ParseMultipartForm(32 << 20) // 32mb
-	file, _, err := r.FormFile(field)
-	if err != nil {
-		return err
-	}
-	defer file.Close()
-
-	distFile, err := os.Create(dist)
-	defer distFile.Close()
-	if err != nil {
-		return err
-	}
-	if _, err := io.Copy(distFile, file); err != nil {
-		return err
-	}
-	return nil
 }
 
 func (f *FileView) Post(w http.ResponseWriter, r *http.Request, d *gomek.Data) {
