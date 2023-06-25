@@ -5,9 +5,11 @@ import (
 	"log"
 )
 
+const UPLOAD_DIR = "uploads"
+
 func NewFilesManager(table, allowedTypes string) *entityfileuploader.FileManager {
 	fileUpload := entityfileuploader.FileUpload{
-		UploadDir:   "uploads",
+		UploadDir:   UPLOAD_DIR,
 		MaxFileSize: 10,
 		FileTypes:   []string{"png", "jpeg", "jpg"}, // TODO
 		URL:         "http://localhost:4444",

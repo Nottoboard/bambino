@@ -6,8 +6,10 @@ import (
 	"fmt"
 	entityfileuploader "github.com/joegasewicz/entity-file-uploader"
 	"github.com/joegasewicz/gomek"
+	"io"
 	"log"
 	"net/http"
+	"os"
 )
 
 type FileView struct{}
@@ -31,11 +33,32 @@ func (f *FileView) Get(w http.ResponseWriter, r *http.Request, d *gomek.Data) {
 	gomek.JSON(w, data, http.StatusOK)
 }
 
+func receiveMultiPartFormDataAndSaveToDir(r *http.Request, dist, field string) error {
+	r.ParseMultipartForm(32 << 20) // 32mb
+	file, _, err := r.FormFile(field)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	distFile, err := os.Create(dist)
+	defer distFile.Close()
+	if err != nil {
+		return err
+	}
+	if _, err := io.Copy(distFile, file); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (f *FileView) Post(w http.ResponseWriter, r *http.Request, d *gomek.Data) {
 	var options OptionSchema
 	var fileResp FileRespSchema
-	optionsStr, err := gomek.GetParams(r, "options")
 
+	fileManager := NewFilesManager("noticeboards", "")
+
+	optionsStr, err := gomek.GetParams(r, "options")
 	fileRespSlices := make([]FileRespSchema, 0)
 	if err != nil {
 		log.Println(err.Error())
@@ -54,10 +77,10 @@ func (f *FileView) Post(w http.ResponseWriter, r *http.Request, d *gomek.Data) {
 		gomek.JSON(w, nil, http.StatusBadRequest)
 		return
 	}
-	agnosticUploader = NewFilesManager(options.EntityName, "") // TODO get allowedTypes from environment vars
+
 	// TODO https://github.com/joegasewicz/bambino/issues/8
 	for _, optionsFileName := range options.Files {
-		fileName, err := entityfileuploader.GetFileName(r, optionsFileName)
+		fileName := optionsFileName
 		if err != nil {
 			log.Println(err.Error())
 			gomek.JSON(w, nil, http.StatusBadRequest)
@@ -84,7 +107,8 @@ func (f *FileView) Post(w http.ResponseWriter, r *http.Request, d *gomek.Data) {
 		if result.RowsAffected == 0 {
 			log.Printf("unable to save file with name: %s", fileName)
 		}
-		_, err = agnosticUploader.Upload(w, r, fileModel.ID, optionsFileName)
+		err = fileManager.ReceiveMultiPartFormDataAndSaveToDir(r, "logo", fileModel.ID)
+
 		if err != nil {
 			log.Println(err)
 			log.Printf("unable to store file on server with name: %s", fileName)

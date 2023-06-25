@@ -47,7 +47,6 @@ Get a file by ID. Response:
 }
 ```
 
-
 #### Files
 `http://localhost:4444/files`
 

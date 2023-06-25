@@ -17,3 +17,5 @@ require (
 	gorm.io/driver/postgres v1.5.0 // indirect
 	gorm.io/gorm v1.25.0 // indirect
 )
+
+replace github.com/joegasewicz/entity-file-uploader => /Users/joegoose/GolandProjects/entity-file-uploader
