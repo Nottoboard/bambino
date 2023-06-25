@@ -10,6 +10,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 )
 
 type FileView struct{}
@@ -108,7 +109,9 @@ func (f *FileView) Post(w http.ResponseWriter, r *http.Request, d *gomek.Data) {
 			log.Printf("unable to save file with name: %s", fileName)
 		}
 
-		_, err = fileManager.Upload(w, r, fileModel.ID, optionsFileName)
+		fullPath, err := fileManager.Upload(w, r, fileModel.ID, optionsFileName)
+		absPath := strings.Split(fullPath, "/")
+		name := absPath[len(absPath)-1]
 		if err != nil {
 			// Handle file uploads over http
 			err = fileManager.ReceiveMultiPartFormDataAndSaveToDir(r, "logo", fileModel.ID)
@@ -120,8 +123,8 @@ func (f *FileView) Post(w http.ResponseWriter, r *http.Request, d *gomek.Data) {
 			}
 		}
 
-		path := fmt.Sprintf("%d/%s", fileModel.ID, fileModel.Name)
-		url := fmt.Sprintf("%s/%s", AppConfig.GetUrl(), path)
+		path := fmt.Sprintf("%d/%s", fileModel.ID, name)
+		url := fmt.Sprintf("%s/%s/%s/%s", AppConfig.GetUrl(), fileManager.UploadDir, options.EntityName, path)
 		fileResp = FileRespSchema{
 			ID:         fileModel.ID,
 			FileName:   fileName,
@@ -129,7 +132,7 @@ func (f *FileView) Post(w http.ResponseWriter, r *http.Request, d *gomek.Data) {
 			Data:       options.Data,
 			EntityName: fileModel.EntityName,
 			Url:        url,
-			Path:       fmt.Sprintf("/%s", path),
+			Path:       fmt.Sprintf("%s/%s/%s", fileManager.UploadDir, options.EntityName, path),
 			CreatedOn:  fileModel.CreatedAt.String(),
 		}
 		fileRespSlices = append(fileRespSlices, fileResp)
