@@ -18,7 +18,7 @@ This is set via the query params, e.g
 - data
 
 ### Docker Image
-Pull down locksmith from the Docker registry
+Pull down bambino from the Docker registry
 ```
 docker pull bandnoticeboard/bambino:v0.0.3
 ```
