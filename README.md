@@ -17,6 +17,14 @@ This is set via the query params, e.g
 - id
 - data
 
+### Docker Image
+Pull down locksmith from the Docker registry
+```
+docker pull bandnoticeboard/bambino:v0.0.2
+```
+
+Or select a version here - [bandnoticeboard/bambino](https://hub.docker.com/r/bandnoticeboard/bambino)
+
 ### Response POST `/files`
 This is a response examples if we were to use this request url:
 `http://127.0.0.1:4444/files?options={"files": ["cat1", "cat2", "cat3"], "data": {}, "id": 1, "entity_name": "User" }`
