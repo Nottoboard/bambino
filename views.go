@@ -35,8 +35,6 @@ func (f *FileView) Post(w http.ResponseWriter, r *http.Request, d *gomek.Data) {
 	var options OptionSchema
 	var fileResp FileRespSchema
 
-	fileManager := NewFilesManager("noticeboards", "")
-
 	optionsStr, err := gomek.GetParams(r, "options")
 	fileRespSlices := make([]FileRespSchema, 0)
 	if err != nil {
@@ -56,9 +54,10 @@ func (f *FileView) Post(w http.ResponseWriter, r *http.Request, d *gomek.Data) {
 		gomek.JSON(w, nil, http.StatusBadRequest)
 		return
 	}
+	fileManager := NewFilesManager(options.EntityName, "")
 
 	// TODO https://github.com/joegasewicz/bambino/issues/8
-	for _, optionsFileName := range options.Files {
+	for i, optionsFileName := range options.Files {
 		fileName := optionsFileName
 		if err != nil {
 			log.Println(err.Error())
@@ -86,11 +85,11 @@ func (f *FileView) Post(w http.ResponseWriter, r *http.Request, d *gomek.Data) {
 		if result.RowsAffected == 0 {
 			log.Printf("unable to save file with name: %s", fileName)
 		}
-
 		_, err = fileManager.Upload(w, r, fileModel.ID, optionsFileName)
 		if err != nil {
 			// Handle file uploads over http
-			err = fileManager.ReceiveMultiPartFormDataAndSaveToDir(r, "logo", fileModel.ID)
+
+			err = fileManager.ReceiveMultiPartFormDataAndSaveToDir(r, options.Fields[i], fileModel.ID)
 			if err != nil {
 				log.Println(err)
 				log.Printf("unable to store file on server with name: %s", fileName)

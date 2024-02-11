@@ -2,6 +2,7 @@ package main
 
 type OptionSchema struct {
 	Files      []string               `json:"files"`
+	Fields     []string               `json:"fields"`
 	Data       map[string]interface{} `json:"data"`
 	ID         int                    `json:"id"`
 	EntityName string                 `json:"entity_name"`
