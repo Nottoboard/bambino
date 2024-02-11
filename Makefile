@@ -1,10 +1,10 @@
-NAME=bambino:v0.0.2
+NAME=bambino:v0.0.3
 
 build:
 	docker build --tag bandnoticeboard/$(NAME) .
 
 run:
-	docker run --add-host=host.docker.internal:host-gateway --env-file ./.env-local bandnoticeboard/$(NAME)
+	docker run --add-host=host.docker.internal:host-gateway --env-file ./.env-dev bandnoticeboard/$(NAME)
 
 push:
 	docker push bandnoticeboard/$(NAME)

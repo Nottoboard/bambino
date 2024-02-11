@@ -20,7 +20,7 @@ This is set via the query params, e.g
 ### Docker Image
 Pull down locksmith from the Docker registry
 ```
-docker pull bandnoticeboard/bambino:v0.0.2
+docker pull bandnoticeboard/bambino:v0.0.3
 ```
 
 Or select a version here - [bandnoticeboard/bambino](https://hub.docker.com/r/bandnoticeboard/bambino)

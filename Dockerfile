@@ -7,8 +7,8 @@ COPY . .
 
 RUN go mod download
 
-RUN go build -o /bambino
+RUN go build -o /bambino_server
 
 EXPOSE 4444
 
-CMD ["/bambino"]
+CMD ["/bambino_server"]
